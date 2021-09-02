@@ -1,5 +1,6 @@
+from types import resolve_bases
 import urllib
-from utils import load_data, load_template
+from utils import load_data, load_template, writeNote, build_response
 
 def index(request):
     # A string de request sempre começa com o tipo da requisição (ex: GET, POST)
@@ -16,8 +17,13 @@ def index(request):
         # Dica: use o método split da string e a função unquote_plus
         for chave_valor in corpo.split('&'):
             keyList = chave_valor.split("=")
+            keyList[0] = urllib.parse.unquote_plus(keyList[0], encoding = 'utf-8')
+            keyList[1] = urllib.parse.unquote_plus(keyList[1], encoding = 'utf-8')
             params[keyList[0]] = keyList[1]
         print("================{}======================".format(params))
+        writeNote(params)
+        response = build_response(code=303, reason='See Other', headers='Location: /')
+        return response
     # Cria uma lista de <li>'s para cada anotação
     # Se tiver curiosidade: https://docs.python.org/3/tutorial/datastructures.html#list-comprehensions
     note_template = load_template('components/note.html')
@@ -26,5 +32,4 @@ def index(request):
         for dados in load_data('notes.json')
     ]
     notes = '\n'.join(notes_li)
-
-    return load_template('index.html').format(notes=notes).encode()
+    return build_response(load_template('index.html').format(notes=notes))
