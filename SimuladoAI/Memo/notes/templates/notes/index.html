@@ -1,0 +1,22 @@
+{% extends "notes/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="appbar">
+  <p class="subtitle">Só Um post-it</p>
+</div>
+<main class="container">
+    <form method="post" class="form-card">
+        {% csrf_token %}
+        <input id="titulo" type="text" name="titulo" class="form-card-title" placeholder="Título"/>
+        <textarea id="detalhes" name="detalhes" class="autoresize" placeholder="Digite o conteúdo..."></textarea>
+        <input type="submit" class="btn"/>
+      </form>
+    
+      <div class="card-container">
+          {% if note %}
+            {% include 'notes/note.html' %}
+          {% endif %}
+      </div>
+</main>  
+{% endblock %}

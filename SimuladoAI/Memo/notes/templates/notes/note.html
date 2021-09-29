@@ -1,0 +1,36 @@
+<div class="card" id = "card-{{note.id}}">
+    <div class="note" id="note-{{note.id}}">
+      <div class="card-content"> 
+        <h3 class="card-title" id="title-{{note.id}}">{{ note.title }}</h3>
+        <div class="card-text" id="details-{{note.id}}">
+          <p>
+            {{note.details}}
+          </p>
+        </div>
+      </div>
+      <div class="modify-menu" id="modify-menu-{{note.id}}">
+        <button class="modify-button" id="edit-button-{{note.id}}" onclick="openUpdateCard('{{note.id}}')"><i class="material-icons">edit</i></button>
+        <form method="POST" action="{% url 'delete' %}">
+            {% csrf_token %}
+            <input type="hidden" value="{{note.id}}" name="id">
+            <button class="modify-button" id="delete-button-{{note.id}}" type="submit"><i class="material-icons">delete</i></button>
+        </form>
+      </div>
+    </div>
+  
+    <div class="note-modify" id="note-modify-{{note.id}}">
+        <div class="card-content">
+            <form method="POST" action="{% url 'update' %}">
+                {% csrf_token %}
+                <input type="hidden" value="{{note.id}}" name="id">
+                    <input class="modify-card-title" id="modify-card-title-{{note.id}}" type="title" name="title" value="{{ note.title }}"/>
+                    <textarea class="modify-card-text" id="modify-card-text-{{note.id}}" name="details">{{note.details}}</textarea>
+                </div>
+                <div class="modify-menu" id="modify-menu-{{note.id}}">
+                    <button class="modify-button" id="edit-button-{{note.id}}" type="submit"><i class="material-icons">done</i></button>
+                    <button class="modify-button" id="delete-button-{{note.id}}" onclick="closeUpdateCard('{{note.id}}')"><i class="material-icons">keyboard_return</i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+  </div>
